@@ -1,0 +1,21 @@
+{
+  "name": "sistema_facturacion",
+  "version": "1.0.0",
+  "description": "\"# sistema_facturacion\"",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.2.0"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
+  }
+}
