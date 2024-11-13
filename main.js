@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app: electronApp, BrowserWindow } = require('electron'); // Renombrar 'app' para evitar conflicto
 const path = require('path');
 
 function createWindow() {
@@ -15,12 +15,12 @@ function createWindow() {
   win.loadFile('index.html');
 }
 
-app.on('ready', createWindow);
+electronApp.on('ready', createWindow);
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+electronApp.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') electronApp.quit();
 });
 
-app.on('activate', () => {
+electronApp.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
