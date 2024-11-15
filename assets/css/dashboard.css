@@ -1,3 +1,4 @@
+/* /assets/css/dashboard.css */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,63 +7,48 @@
 
 body {
     font-family: Arial, sans-serif;
+    background-color: ghostwhite;
+    margin: 0;
 }
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #333;
+    padding: 10px 0;
+    margin: 12px;
+    background-color: ghostwhite;
     color: #fff;
     position: fixed; /* Fija el header en la parte superior */
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000; /* Asegura que el header quede por encima de otros elementos */
+    height: 60px; /* Especifica la altura del header */
 }
 
 .logo-container {
     display: flex;
+    justify-content: center;
     align-items: center;
 }
-
 .logo {
-    height: 40px;
+    height: 75px; /* Aumentar el tamaño del logo a 100px */
     margin-right: 10px;
 }
 
-.company-name {
-    font-size: 1.2rem;
-}
-
-/* Botón de backup en header */
-.header .backup-btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.header .backup-btn:hover {
-    background-color: #0056b3;
-}
-
+/* El resto del diseño permanece igual */
 .main-container {
     display: flex;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 60px); /* Ajusta el tamaño del contenedor al 100vh menos la altura del header */
     margin-top: 0;
-    padding-top: 60px; /* Para asegurar que el contenido no quede debajo del header */
+    padding-top: 70px; /* Esto asegura que el contenido comience debajo del header */
 }
 
 .sidebar {
-    background-color: #f5f5f5;
+    background-color: ghostwhite;
     padding: 20px;
-    width: 70%;
+    width: 65%;
 }
 
 .menu {
@@ -82,12 +68,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid transparent;
+    text-decoration: none; /* Elimina subrayado */
 }
 
 .menu-item:hover {
@@ -96,21 +83,21 @@ body {
     border-color: #007bff;
 }
 
-.menu-icon {
-    width: 200px; 
-    height: 200px;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
 .menu-item p {
     font-weight: bold;
     margin-top: 5px;
 }
 
+.menu-item img {
+    width: 185px; /* Ajusta el tamaño de los íconos */
+    height: 185px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
 /* Contenido a la derecha */
 .content {
-    width: 30%; /* El contenido ocupará el 30% de la pantalla */
+    width: 35%; /* El contenido ocupará el 30% de la pantalla */
     padding: 20px;
     height: 85%; /* Ajusta la altura al contenido */
 }
@@ -151,7 +138,7 @@ body {
 .backup-section .backup-btn {
     width: 100%; /* Para que ocupe todo el ancho del contenedor */
     font-size: 1rem;
-    padding: 10px;
+    padding: 8px;
     background-color: #007bff;
     color: white;
     border: none;

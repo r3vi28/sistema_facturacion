@@ -1,3 +1,5 @@
+// server.js
+
 const express = require('express');
 const app = express();
 const { sequelize } = require('./models');
@@ -22,6 +24,8 @@ app.use(authRoutes); // Añadir la ruta de autenticación
 // Sincronizar la base de datos
 sequelize.sync({ force: false }).then(() => {
     console.log('Base de datos sincronizada');
+})  .catch((error) => {
+    console.error('Error al sincronizar la base de datos:', error);
 });
 
 // Iniciar el servidor

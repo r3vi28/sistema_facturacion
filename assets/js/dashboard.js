@@ -1,3 +1,4 @@
+// /assets/js/dashboard.js
 document.addEventListener("DOMContentLoaded", () => {
     // Simular carga de estadísticas
     document.getElementById("totalClientes").innerText = "120";

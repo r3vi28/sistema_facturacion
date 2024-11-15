@@ -1,3 +1,4 @@
+// /database.js
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Configuración de la base de datos
