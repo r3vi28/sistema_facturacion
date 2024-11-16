@@ -5,10 +5,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        descripcion: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         precio: {
             type: DataTypes.FLOAT,
             allowNull: false

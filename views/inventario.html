@@ -1,11 +1,11 @@
-<!-- /views/inventory.html -->
+<!-- /views/inventario.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario</title>
-    <link rel="stylesheet" href="../assets/css/inventory.css">
+    <link rel="stylesheet" href="../assets/css/inventario.css">
 </head>
 <body>
     <header class="header">
@@ -14,43 +14,59 @@
         </button>
         <h1 class="page-title">Inventario</h1>
     </header>
-    <main class="main-container">
-        <div class="content-container">
-            <section class="inventory-form">
-                <h2>Agregar Producto</h2>
-                <form id="product-form">
-                    <label for="product-name">Nombre:</label>
-                    <input type="text" id="product-name" required>
-                    
-                    <label for="product-quantity">Cantidad:</label>
-                    <input type="number" id="product-quantity" min="0" required>
-                    
-                    <label for="product-price">Precio:</label>
-                    <input type="number" id="product-price" min="0.01" step="0.01" required>
-                    
-                    <button type="submit" class="add-btn">Agregar Producto</button>
-                </form>
-            </section>
 
-            <section class="inventory-list">
-                <h2>Lista de Productos</h2>
-                <input type="text" id="search-bar" placeholder="Buscar producto...">
-                <table id="product-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Aquí se agregan las filas dinámicamente -->
-                    </tbody>
-                </table>
-            </section>
-        </div>
+    <main class="main-container">
+        <section class="product-section">
+            <div class="search-container">
+                <input type="text" id="product-search-bar" placeholder="Buscar cliente...">
+                <button id="add-product-btn" class="add-btn">Agregar Producto</button>
+            </div>
+            <table id="product-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se agregan las filas dinámicamente -->
+                </tbody>
+            </table>
+        </section>
     </main>
-    <script src="../assets/js/inventory.js"></script>
+
+    <!-- Formulario flotante para agregar producto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">&times;</button>
+            <h2 id="modal-title">Agregar Producto</h2>
+            <form id="productForm">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" required>
+
+                <label for="cantidad">Cantidad:</label>
+                <input type="number" id="cantidad">
+
+                <label for="price">Precio:</label>
+                <input type="number" id="price">
+
+                <button type="submit" class="submit-btn">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de entrada para sumar cantidad -->
+    <div id="increase-quantity-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn" onclick="closeIncreaseQuantityModal()">&times;</button>
+            <h3>¿Cuántos productos deseas agregar?</h3>
+            <input type="number" id="quantity-input" placeholder="Cantidad" min="1">
+            <button id="confirm-quantity" class="confirm-btn">Confirmar</button>
+        </div>
+    </div>
+
+    <script src="../assets/js/inventario.js"></script>
 </body>
 </html>
