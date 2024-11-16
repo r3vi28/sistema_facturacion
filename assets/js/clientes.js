@@ -37,6 +37,11 @@ function renderClients() {
     const clientTableBody = document.querySelector('#client-table tbody');
     clientTableBody.innerHTML = '';
 
+    if (clients.length === 0) {
+        clientTableBody.innerHTML = '<tr><td colspan="4">No hay productos disponibles.</td></tr>';
+        return;
+    }
+
     const filteredClients = clients.filter(client =>
         client.name.toLowerCase().includes(clientSearchBar.value.toLowerCase())
     );
