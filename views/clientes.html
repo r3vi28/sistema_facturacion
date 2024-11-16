@@ -1,4 +1,3 @@
-<!-- /views/clientes.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,16 +8,39 @@
 </head>
 <body>
     <header class="header">
-        <h1 class="page-title">Clientes</h1>
         <button class="back-btn" onclick="window.location.href='dashboard.html'">
             <img src="../assets/img/back-btn.png" alt="Regresar al Dashboard" class="back-icon">
         </button>
+        <h1 class="page-title">Clientes</h1>
     </header>
 
     <main class="main-container">
-        <!-- Formulario para agregar clientes -->
-        <section class="form-section">
-            <h2>Agregar Cliente</h2>
+        <section class="clients-section">
+            <div class="search-container">
+                <input type="text" id="client-search-bar" placeholder="Buscar cliente...">
+                <button id="add-client-btn" class="add-btn">Agregar Cliente</button>
+            </div>
+            <table id="client-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se agregan las filas dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Formulario flotante -->
+    <div id="client-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">&times;</button>
+            <h2 id="modal-title">Agregar Cliente</h2>
             <form id="clientForm">
                 <label for="name">Nombre:</label>
                 <input type="text" id="name" required>
@@ -32,19 +54,11 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email">
 
-                <button type="submit">Agregar Cliente</button>
+                <button type="submit" class="submit-btn">Guardar</button>
             </form>
-        </section>
+        </div>
+    </div>
 
-        <!-- Barra de búsqueda y lista de clientes -->
-        <section class="client-list-section">
-            <h2>Lista de Clientes</h2>
-            <input type="text" id="searchBar" placeholder="Buscar cliente...">
-            <ul id="clientList">
-                <!-- Lista de clientes generada dinámicamente -->
-            </ul>
-        </section>
-    </main>
     <script src="../assets/js/clientes.js"></script>
 </body>
 </html>
