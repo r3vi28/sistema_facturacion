@@ -1,7 +1,7 @@
 // models/gasto.js
 module.exports = (sequelize, DataTypes) => {
     const Gasto = sequelize.define('Gasto', {
-        descripcion: {
+        concepto: {
             type: DataTypes.STRING,
             allowNull: false
         },

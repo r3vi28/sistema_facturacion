@@ -1,3 +1,4 @@
+// /assets/js/inventario.js
 const products = [];
 let editingIndex = null;
 
