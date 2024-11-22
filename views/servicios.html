@@ -1,0 +1,62 @@
+<!-- /views/servicios.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gastos</title>
+    <link rel="stylesheet" href="../assets/css/servicios.css">
+</head>
+<body>
+    <header class="header">
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">
+            <img src="../assets/img/back-btn.png" alt="Regresar al Dashboard" class="back-icon">
+        </button>
+        <h1 class="page-title">Servicios</h1>
+    </header>
+
+    <main class="main-container">
+        <section class="service-section">
+            <div class="search-container">
+                <input type="text" id="service-search-bar" placeholder="Buscar servicio...">
+                <button id="add-service-btn" class="add-btn">Agregar Servicio</button>
+            </div>
+            <table id="service-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se agregan las filas dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Formulario flotante -->
+    <div id="service-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">&times;</button>
+            <h2 id="modal-title">Agregar Servicio</h2>
+            <form id="serviceForm">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" required>
+
+                <label for="description">Descripción:</label>
+                <input list="text" id="description">
+                
+                <label for="price">Precio:</label>
+                <input type="number" id="price">
+
+                <button type="submit" class="submit-btn">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/servicios.js"></script>
+</body>
+</html>
