@@ -2,6 +2,8 @@
 
 const { app, BrowserWindow } = require('electron');
 
+const path = require('path');
+
 function createWindow() {
     const win = new BrowserWindow({
         width: 800, // Ancho inicial
@@ -12,7 +14,8 @@ function createWindow() {
     });
 
     // Cargar la página HTML
-    win.loadFile('index.html');
+    // win.loadFile('index.html');
+    win.loadFile(path.join(__dirname, 'views', 'clientes.html'));
 
     // Maximizar la ventana
     win.maximize();

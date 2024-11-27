@@ -1,10 +1,12 @@
 // models/index.js
 const { Sequelize, DataTypes } = require('sequelize');
+const path = require('path');
 
-// Conexión a SQLite
+// Configuración de la conexión con SQLite
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: './database.sqlite', // Ruta donde se guardará tu base de datos
+    storage: path.join(__dirname, '../database.sqlite'), // Ruta donde se guardará la base de datos
+    logging: false // Desactivar logs de SQL en consola (opcional)
 });
 
 // Importación de modelos
@@ -12,17 +14,16 @@ const Cliente = require('./cliente')(sequelize, DataTypes);
 const Producto = require('./producto')(sequelize, DataTypes);
 const Servicio = require('./servicio')(sequelize, DataTypes);
 const Venta = require('./venta')(sequelize, DataTypes);
-const DetalleVenta = require('./detalleVenta')(sequelize, DataTypes);
 const Gasto = require('./gasto')(sequelize, DataTypes);
 
-// Relacionar los modelos
-Venta.hasMany(DetalleVenta);
-DetalleVenta.belongsTo(Venta);
+// Definición de relaciones entre modelos
 
-Producto.hasMany(DetalleVenta);
-DetalleVenta.belongsTo(Producto);
-
-Servicio.hasMany(DetalleVenta);
-DetalleVenta.belongsTo(Servicio);
-
-module.exports = { sequelize, Cliente, Producto, Servicio, Venta, DetalleVenta, Gasto };
+// Exportación de conexión y modelos
+module.exports = {
+    sequelize,
+    Cliente,
+    Producto,
+    Servicio,
+    Venta,
+    Gasto
+};

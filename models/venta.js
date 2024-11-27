@@ -1,4 +1,3 @@
-// models/venta.js
 module.exports = (sequelize, DataTypes) => {
     const Venta = sequelize.define('Venta', {
         fecha: {
@@ -15,9 +14,23 @@ module.exports = (sequelize, DataTypes) => {
         },
         total: {
             type: DataTypes.FLOAT,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isFloat: true,
+                min: 0
+            }
         }
+    }, {
+        tableName: 'ventas',
+        timestamps: true
     });
+
+    Venta.associate = models => {
+        Venta.belongsTo(models.Cliente, {
+            foreignKey: 'clienteId',
+            as: 'cliente'
+        });
+    };
 
     return Venta;
 };
