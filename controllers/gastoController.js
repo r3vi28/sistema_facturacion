@@ -4,10 +4,11 @@ const { Gasto } = require('../models');
 // Crear un nuevo gasto
 exports.createGasto = async (req, res) => {
     try {
-        const { descripcion, monto, fecha } = req.body;
+        const { concepto, monto, categoria, fecha } = req.body; // Usamos 'concepto' según el modelo
         const gasto = await Gasto.create({
-            descripcion,
+            concepto,   // Asignamos 'concepto'
             monto,
+            categoria,  // Asegúrate de incluir 'categoria' si lo deseas
             fecha
         });
         res.status(201).json(gasto);
@@ -47,12 +48,13 @@ exports.getGastoById = async (req, res) => {
 // Actualizar un gasto
 exports.updateGasto = async (req, res) => {
     const { id } = req.params;
-    const { descripcion, monto, fecha } = req.body;
+    const { concepto, monto, categoria, fecha } = req.body; // Cambié 'descripcion' por 'concepto' y añadí 'categoria'
     try {
         const gasto = await Gasto.findByPk(id);
         if (gasto) {
-            gasto.descripcion = descripcion;
+            gasto.concepto = concepto;  // Actualizamos 'concepto'
             gasto.monto = monto;
+            gasto.categoria = categoria; // Incluimos 'categoria'
             gasto.fecha = fecha;
             await gasto.save();
             res.status(200).json(gasto);

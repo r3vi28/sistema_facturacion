@@ -1,5 +1,7 @@
+// /assets/js/gastos.js
 const spents = [];
 let editingIndex = null;
+const BASE_URL = 'http://localhost:3000';
 
 // Elementos del DOM
 const spentModal = document.getElementById('spent-modal');
@@ -9,10 +11,41 @@ const spentForm = document.getElementById('spentForm');
 const spentSearchBar = document.getElementById('spent-search-bar');
 const modalTitle = document.getElementById('modal-title');
 
+// Validar gastos
+function validateSpentForm() {
+    const concepto = document.getElementById('concepto').value.trim();
+    const categoria = document.getElementById('categoria').value.trim();
+    const fecha = document.getElementById('fecha').value.trim();
+    const monto = document.getElementById('monto').value.trim();
+
+    const errorMessages = [];
+
+    if (concepto.length < 2 || concepto.length > 50) {
+        errorMessages.push('El concepto debe tener entre 2 y 50 caracteres');
+    }
+
+    if (!categoria) {
+        errorMessages.push('Debe seleccionar una categoría válida');
+    }
+
+    if (!fecha) {
+        errorMessages.push('Debe ingresar una fecha válida');
+    }
+
+    if (!monto || isNaN(monto) || parseFloat(monto) <= 0) {
+        errorMessages.push('El monto debe ser un número válido mayor a 0');
+    }
+
+    return {
+        isValid: errorMessages.length === 0,
+        errorMessages
+    };
+}
+
 // Abrir modal
 function openModal(isEditing = false, index = null) {
     spentModal.style.display = 'block';
-    if (isEditing) {
+    if (isEditing && index !== null) {
         editingIndex = index;
         modalTitle.textContent = 'Editar Gasto';
         const spent = spents[index];
@@ -44,63 +77,113 @@ function renderSpents() {
     spentTableBody.innerHTML = '';
 
     if (spents.length === 0) {
-        spentTableBody.innerHTML = '<tr><td colspan="5">No hay gastos registrados.</td></tr>';
+        spentTableBody.innerHTML = '<tr><td colspan="4">No hay gastos disponibles.</td></tr>';
         return;
     }
 
     const filteredSpents = spents.filter(spent =>
-        spent.concepto.toLowerCase().includes(spentSearchBar.value.toLowerCase())
+        spent.concepto.toLowerCase().includes(spentSearchBar.value.toLowerCase()) ||
+        (spent.categoria.includes(spentSearchBar.value.toLowerCase()))
     );
 
     filteredSpents.forEach((spent, index) => {
         const row = document.createElement('tr');
-
         row.innerHTML = `
             <td>${spent.concepto}</td>
             <td>${spent.categoria}</td>
             <td>${spent.fecha}</td>
             <td>${formatCurrency(spent.monto)}</td>
-            <td>
+            <td class="client-actions">
                 <button class="edit-btn" onclick="openModal(true, ${index})">Editar</button>
-                <button class="delete-btn" onclick="deleteSpent(${index})">Eliminar</button>
+                <button class="delete-btn" onclick="deleteClient(${index})">Eliminar</button>
             </td>
         `;
-
         spentTableBody.appendChild(row);
     });
 }
 
-// Agregar o editar gasto
-function saveSpent(event) {
+// Fetch gastos
+async function fetchSpents() {
+    try {
+        const response = await fetch(`${BASE_URL}/gastos`);
+        const data = await response.json();
+        spents.splice(0, spents.length, ...data);
+        renderSpents();
+    } catch (error) {
+        console.error('Error al obtener gastos:', error);
+        alert('No se pudieron cargar los gastos. Verifique la conexión.');
+    }
+}
+
+// Guardar clientes
+async function saveSpent(event) {
     event.preventDefault();
+    
+    const validation = validateSpentForm();
+    if (!validation.isValid) {
+        alert(validation.errorMessages.join('\n'));
+        return;
+    }
+
     const concepto = document.getElementById('concepto').value.trim();
     const categoria = document.getElementById('categoria').value.trim();
     const fecha = document.getElementById('fecha').value.trim();
     const monto = document.getElementById('monto').value.trim();
 
-    if (editingIndex === null) {
-        spents.push({ concepto, categoria, fecha, monto });
-    } else {
-        spents[editingIndex] = { concepto, categoria, fecha, monto };
-    }
+    const spentData = { concepto, categoria, fecha, monto };
 
-    renderSpents();
-    closeModalWindow();
+    try {
+        if (editingIndex === null) {
+            // Agregar nuevo cliente
+            await fetch(`${BASE_URL}/gastos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(spentData),
+            });
+        } else {
+            // Editar cliente existente
+            const spentId = spents[editingIndex].id;
+            await fetch(`${BASE_URL}/gastos/${clientId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(spentData),
+            });
+        }
+        // Recargar los gastos
+        await fetchSpents();
+        closeModalWindow();
+    } catch (error) {
+        console.error('Error al guardar gasto:', error);
+        alert('No se pudo guardar el gasto. Intente nuevamente.');
+    }
 }
 
 // Eliminar gasto
-function deleteSpent(index) {
-    if (confirm(`¿Está seguro de eliminar el gasto ${spents[index].concepto}?`)) {
-        spents.splice(index, 1);
-        renderSpents();
+async function deleteSpent(index) {
+    const spent = spents[index];
+    
+    if (confirm(`¿Está seguro de eliminar el gasto ${spent.concepto}?`)) {
+        try {
+            await fetch(`${BASE_URL}/gastos/${spent.id}`, {
+                method: 'DELETE',
+            });
+            await fetchSpents();
+        } catch (error) {
+            console.error('Error al eliminar gasto:', error);
+            alert('No se pudo eliminar el gasto. Intente nuevamente.');
+        }
     }
 }
 
 // Event Listeners
+// addSpentBtn.addEventListener('click', () => openModal());
+// closeModal.addEventListener('click', closeModalWindow);
+// spentSearchBar.addEventListener('input', renderSpents);
+// spentForm.addEventListener('submit', saveSpent);
+// window.addEventListener('load', fetchSpents);
+
 addSpentBtn.addEventListener('click', () => openModal());
 closeModal.addEventListener('click', closeModalWindow);
 spentSearchBar.addEventListener('input', renderSpents);
 spentForm.addEventListener('submit', saveSpent);
-window.addEventListener('click', (e) => {
-    if (e.target === spentModal) closeModalWindow();
-});
+window.addEventListener('load', fetchSpents);

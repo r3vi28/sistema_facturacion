@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const gastoController = require('../controllers/gastoController');
 
-// Rutas para gasto
+// Rutas para gastos
 router.post('/gastos', gastoController.createGasto);
 router.get('/gastos', gastoController.getGastos);
 router.get('/gastos/:id', gastoController.getGastoById);

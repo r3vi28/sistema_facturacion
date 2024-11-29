@@ -1,8 +1,9 @@
 // /assets/js/clientes.js
 const clients = [];
 let editingIndex = null;
-const BASE_URL = 'http://localhost:3000'; // Eliminé process.env para simplicidad
+const BASE_URL = 'http://localhost:3000';
 
+// Elementos del DOM
 const clientModal = document.getElementById('client-modal');
 const closeModal = document.getElementById('close-modal');
 const addClientBtn = document.getElementById('add-client-btn');
@@ -10,6 +11,7 @@ const clientForm = document.getElementById('clientForm');
 const clientSearchBar = document.getElementById('client-search-bar');
 const modalTitle = document.getElementById('modal-title');
 
+// Validar los clientes
 function validateClientForm() {
     const nombre = document.getElementById('name').value.trim();
     const telefono = document.getElementById('phone').value.trim();
@@ -35,6 +37,7 @@ function validateClientForm() {
     };
 }
 
+// Abrir modal
 function openModal(isEditing = false, index = null) {
     clientModal.style.display = 'block';
     if (isEditing && index !== null) {
@@ -52,10 +55,12 @@ function openModal(isEditing = false, index = null) {
     }
 }
 
+// Cerrar modal
 function closeModalWindow() {
     clientModal.style.display = 'none';
 }
 
+// Renderizar clientes
 function renderClients() {
     const clientTableBody = document.querySelector('#client-table tbody');
     clientTableBody.innerHTML = '';
@@ -68,13 +73,14 @@ function renderClients() {
     const filteredClients = clients.filter(client =>
         client.nombre.toLowerCase().includes(clientSearchBar.value.toLowerCase()) ||
         (client.email && client.email.toLowerCase().includes(clientSearchBar.value.toLowerCase())) ||
-        (client.telefono && client.telefono.includes(clientSearchBar.value))
+        client.direccion.toLowerCase().includes(clientSearchBar.value.toLowerCase())
     );
 
     filteredClients.forEach((client, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${client.nombre}</td>
+            <td>${client.direccion}</td>
             <td>${client.email || 'N/A'}</td>
             <td>${client.telefono}</td>
             <td class="client-actions">
@@ -86,6 +92,7 @@ function renderClients() {
     });
 }
 
+// Fetch clientes
 async function fetchClients() {
     try {
         const response = await fetch(`${BASE_URL}/clientes`);
@@ -98,6 +105,7 @@ async function fetchClients() {
     }
 }
 
+// Guardar clientes
 async function saveClient(event) {
     event.preventDefault();
     
@@ -131,7 +139,7 @@ async function saveClient(event) {
                 body: JSON.stringify(clientData),
             });
         }
-        
+        // Recargar los gastos
         await fetchClients();
         closeModalWindow();
     } catch (error) {
@@ -140,8 +148,10 @@ async function saveClient(event) {
     }
 }
 
+// Eliminar clientes
 async function deleteClient(index) {
     const client = clients[index];
+    
     if (confirm(`¿Está seguro de eliminar al cliente ${client.nombre}?`)) {
         try {
             await fetch(`${BASE_URL}/clientes/${client.id}`, {

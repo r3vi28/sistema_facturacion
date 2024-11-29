@@ -114,6 +114,7 @@ body {
 .modal-content input,
 .modal-content textarea,
 .modal-content select {
+    
     width: 100%;
     margin-bottom: 15px;
     padding: 10px;

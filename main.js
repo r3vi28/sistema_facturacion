@@ -14,8 +14,8 @@ function createWindow() {
     });
 
     // Cargar la página HTML
-    // win.loadFile('index.html');
-    win.loadFile(path.join(__dirname, 'views', 'clientes.html'));
+    win.loadFile('index.html');
+    // win.loadFile(path.join(__dirname, 'views', 'dashboard.html'));
 
     // Maximizar la ventana
     win.maximize();
