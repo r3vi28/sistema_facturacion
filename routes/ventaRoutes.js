@@ -9,4 +9,3 @@ router.get('/ventas', ventaController.getVentas);
 router.get('/ventas/:id', ventaController.getVentaById);
 
 module.exports = router;
-Archivo: salesRoutes.js

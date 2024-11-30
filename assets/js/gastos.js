@@ -176,11 +176,6 @@ async function deleteSpent(index) {
 }
 
 // Event Listeners
-// addSpentBtn.addEventListener('click', () => openModal());
-// closeModal.addEventListener('click', closeModalWindow);
-// spentSearchBar.addEventListener('input', renderSpents);
-// spentForm.addEventListener('submit', saveSpent);
-// window.addEventListener('load', fetchSpents);
 
 addSpentBtn.addEventListener('click', () => openModal());
 closeModal.addEventListener('click', closeModalWindow);

@@ -4,10 +4,9 @@ const { Producto } = require('../models');
 // Crear un nuevo producto
 exports.createProducto = async (req, res) => {
     try {
-        const { nombre, descripcion, precio, cantidad } = req.body;
+        const { nombre, precio, cantidad } = req.body;
         const producto = await Producto.create({
             nombre,
-            descripcion,
             precio,
             cantidad
         });
@@ -48,12 +47,11 @@ exports.getProductoById = async (req, res) => {
 // Actualizar un producto
 exports.updateProducto = async (req, res) => {
     const { id } = req.params;
-    const { nombre, descripcion, precio, cantidad } = req.body;
+    const { nombre, precio, cantidad } = req.body;
     try {
         const producto = await Producto.findByPk(id);
         if (producto) {
             producto.nombre = nombre;
-            producto.descripcion = descripcion;
             producto.precio = precio;
             producto.cantidad = cantidad;
             await producto.save();
