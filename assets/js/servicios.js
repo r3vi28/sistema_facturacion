@@ -1,5 +1,6 @@
 const services = [];
 let editingIndex = null;
+const BASE_URL = 'http://localhost:3000';
 
 // Elementos del DOM
 const serviceModal = document.getElementById('service-modal');
@@ -9,15 +10,37 @@ const serviceForm = document.getElementById('serviceForm');
 const serviceSearchBar = document.getElementById('service-search-bar');
 const modalTitle = document.getElementById('modal-title');
 
+// Validar producto
+function validateServiceForm() {
+    const nombre = document.getElementById('name').value.trim();
+    const precio = document.getElementById('price').value.trim();
+
+    const errorMessages = [];
+
+    if (nombre.length < 2 || nombre.length > 50) {
+        errorMessages.push('El nombre debe tener entre 2 y 50 caracteres');
+    }
+
+    if (!precio || isNaN(precio) || parseFloat(precio) <= 0) {
+        errorMessages.push('El precio debe ser un número válido mayor a 0');
+    }
+
+    return {
+        isValid: errorMessages.length === 0,
+        errorMessages
+    };
+}
+
 // Abrir modal
 function openModal(isEditing = false, index = null) {
     serviceModal.style.display = 'block';
-    if (isEditing) {
+    if (isEditing && index !== null) {
         editingIndex = index;
         modalTitle.textContent = 'Editar Servicio';
         const service = services[index];
+
         document.getElementById('name').value = service.nombre;
-        document.getElementById('description').value = service.descripcion;
+        document.getElementById('description').value = service.cantidad;
         document.getElementById('price').value = service.precio;
     } else {
         modalTitle.textContent = 'Agregar Servicio';
@@ -53,7 +76,6 @@ function renderServices() {
 
     filteredServices.forEach((service, index) => {
         const row = document.createElement('tr');
-
         row.innerHTML = `
             <td>${service.nombre}</td>
             <td>${service.descripcion}</td>
@@ -68,28 +90,75 @@ function renderServices() {
     });
 }
 
+// Fetch productos
+async function fetchServices() {
+    try {
+        const response = await fetch(`${BASE_URL}/servicios`);
+        const data = await response.json();
+        services.splice(0, services.length, ...data);
+        renderServices();
+    } catch (error) {
+        console.error('Error al obtener servicios:', error);
+        alert('No se pudieron cargar los servicios. Verifique la conexión.');
+    }
+}
+
 // Agregar o editar gasto
-function saveService(event) {
+async function saveService(event) {
     event.preventDefault();
+
+    const validation = validateServiceForm();
+    if (!validation.isValid) {
+        alert(validation.errorMessages.join('\n'));
+        return;
+    }
+
     const nombre = document.getElementById('name').value.trim();
     const descripcion = document.getElementById('description').value.trim();
     const precio = document.getElementById('price').value.trim();
 
-    if (editingIndex === null) {
-        services.push({ nombre, descripcion, precio });
-    } else {
-        services[editingIndex] = { nombre, descripcion, precio };
-    }
+    const serviceData = { nombre, descripcion, precio }
 
-    renderServices();
-    closeModalWindow();
+    try {
+        if (editingIndex === null) {
+            // Agregar nuevo servicio
+            await fetch(`${BASE_URL}/servicios`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(serviceData),
+            });
+        } else {
+            // Editar servicio existente
+            const serviceId = services[editingIndex].id;
+            await fetch(`${BASE_URL}/servicios/${serviceId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(serviceData),
+            });
+        }
+        // Recargar los servicios
+        await fetchServices();
+        closeModalWindow();
+    } catch (error) {
+        console.error('Error al guardar servicio:', error);
+        alert('No se pudo guardar el servicio. Intente nuevamente.');
+    }
 }
 
 // Eliminar gasto
-function deleteService(index) {
-    if (confirm(`¿Está seguro de eliminar el servicio ${services[index].nombre}?`)) {
-        services.splice(index, 1);
-        renderServices();
+async function deleteService(index) {
+    const service = services[index];
+    
+    if (confirm(`¿Está seguro de eliminar el servicio ${service.name}?`)) {
+        try {
+            await fetch(`${BASE_URL}/servicios/${service.id}`, {
+                method: 'DELETE',
+            });
+            await fetchServices();
+        } catch (error) {
+            console.error('Error al eliminar servicio:', error);
+            alert('No se pudo eliminar el servicio. Intente nuevamente.');
+        }
     }
 }
 
@@ -98,6 +167,4 @@ addServiceBtn.addEventListener('click', () => openModal());
 closeModal.addEventListener('click', closeModalWindow);
 serviceSearchBar.addEventListener('input', renderServices);
 serviceForm.addEventListener('submit', saveService);
-window.addEventListener('click', (e) => {
-    if (e.target === serviceModal) closeModalWindow();
-});
+window.addEventListener('load', fetchServices);

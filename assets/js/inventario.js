@@ -198,14 +198,14 @@ async function saveProduct(event) {
 
     try {
         if (editingIndex === null) {
-            // Agregar nuevo cliente
+            // Agregar nuevo producto
             await fetch(`${BASE_URL}/productos`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(productData),
             });
         } else {
-            // Editar cliente existente
+            // Editar producto existente
             const productId = products[editingIndex].id;
             await fetch(`${BASE_URL}/productos/${productId}`, {
                 method: 'PUT',
@@ -213,7 +213,7 @@ async function saveProduct(event) {
                 body: JSON.stringify(productData),
             });
         }
-        // Recargar los gastos
+        // Recargar los productos
         await fetchProducts();
         closeModalWindow();
     } catch (error) {
