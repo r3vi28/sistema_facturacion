@@ -11,6 +11,24 @@ const clientForm = document.getElementById('clientForm');
 const clientSearchBar = document.getElementById('client-search-bar');
 const modalTitle = document.getElementById('modal-title');
 
+// Función para mostrar el mensaje de error
+function showError(message) {
+    const errorToast = document.createElement('div');
+    errorToast.classList.add('error-toast');
+    errorToast.textContent = message;
+
+    document.body.appendChild(errorToast);
+
+    // Hacer que el mensaje se desvanezca después de unos segundos
+    setTimeout(() => {
+        errorToast.style.opacity = '0';
+        setTimeout(() => {
+            errorToast.remove();
+        }, 500); // Espera medio segundo para remover el mensaje después de desvanecerse
+    }, 3000); // El mensaje permanecerá visible por 3 segundos
+}
+
+
 // Validar los clientes
 function validateClientForm() {
     const nombre = document.getElementById('name').value.trim();
@@ -101,7 +119,7 @@ async function fetchClients() {
         renderClients();
     } catch (error) {
         console.error('Error al obtener clientes:', error);
-        alert('No se pudieron cargar los clientes. Verifique la conexión.');
+        showError('No se pudieron cargar los clientes. Verifique la conexión.');
     }
 }
 
@@ -111,7 +129,7 @@ async function saveClient(event) {
     
     const validation = validateClientForm();
     if (!validation.isValid) {
-        alert(validation.errorMessages.join('\n'));
+        showError(validation.errorMessages.join('\n'));
         return;
     }
 
@@ -144,7 +162,7 @@ async function saveClient(event) {
         closeModalWindow();
     } catch (error) {
         console.error('Error al guardar cliente:', error);
-        alert('No se pudo guardar el cliente. Intente nuevamente.');
+        showError('No se pudo guardar el cliente. Intente nuevamente.');
     }
 }
 
@@ -160,7 +178,7 @@ async function deleteClient(index) {
             await fetchClients();
         } catch (error) {
             console.error('Error al eliminar cliente:', error);
-            alert('No se pudo eliminar el cliente. Intente nuevamente.');
+            showError('No se pudo eliminar el cliente. Intente nuevamente.');
         }
     }
 }

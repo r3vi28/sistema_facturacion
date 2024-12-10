@@ -1,14 +1,13 @@
 // controllers/servicioController.js
-const { Servicio } = require('../models');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // Crear un nuevo servicio
 exports.createServicio = async (req, res) => {
     try {
         const { nombre, descripcion, precio } = req.body;
-        const servicio = await Servicio.create({
-            nombre,
-            descripcion,
-            precio
+        const servicio = await prisma.servicio.create({
+            data: { nombre, descripcion, precio }
         });
         res.status(201).json(servicio);
     } catch (error) {
@@ -20,7 +19,7 @@ exports.createServicio = async (req, res) => {
 // Obtener todos los servicios
 exports.getServicios = async (req, res) => {
     try {
-        const servicios = await Servicio.findAll();
+        const servicios = await prisma.servicio.findMany();
         res.status(200).json(servicios);
     } catch (error) {
         console.error('Error al obtener servicios:', error);
@@ -32,7 +31,9 @@ exports.getServicios = async (req, res) => {
 exports.getServicioById = async (req, res) => {
     const { id } = req.params;
     try {
-        const servicio = await Servicio.findByPk(id);
+        const servicio = await prisma.servicio.findUnique({
+            where: { id: parseInt(id) }
+        });
         if (servicio) {
             res.status(200).json(servicio);
         } else {
@@ -49,16 +50,11 @@ exports.updateServicio = async (req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, precio } = req.body;
     try {
-        const servicio = await Servicio.findByPk(id);
-        if (servicio) {
-            servicio.nombre = nombre;
-            servicio.descripcion = descripcion;
-            servicio.precio = precio;
-            await servicio.save();
-            res.status(200).json(servicio);
-        } else {
-            res.status(404).json({ message: 'Servicio no encontrado' });
-        }
+        const servicio = await prisma.servicio.update({
+            where: { id: parseInt(id) },
+            data: { nombre, descripcion, precio }
+        });
+        res.status(200).json(servicio);
     } catch (error) {
         console.error('Error al actualizar servicio:', error);
         res.status(500).json({ message: 'Error al actualizar servicio' });
@@ -69,9 +65,13 @@ exports.updateServicio = async (req, res) => {
 exports.deleteServicio = async (req, res) => {
     const { id } = req.params;
     try {
-        const servicio = await Servicio.findByPk(id);
+        const servicio = await prisma.servicio.findUnique({
+            where: { id: parseInt(id) }
+        });
         if (servicio) {
-            await servicio.destroy();
+            await prisma.servicio.delete({
+                where: { id: parseInt(id) }
+            });
             res.status(204).send();
         } else {
             res.status(404).json({ message: 'Servicio no encontrado' });

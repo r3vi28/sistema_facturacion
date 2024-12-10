@@ -1,3 +1,4 @@
+/* assets/css/cliente.css */
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
@@ -251,4 +252,20 @@ body {
         width: 100%; /* Evitar que se desborden */
         padding: 12px;
     }
+}
+
+/* Formato del error toast */
+.error-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #E70121;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s;
 }

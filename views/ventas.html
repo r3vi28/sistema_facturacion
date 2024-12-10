@@ -1,0 +1,97 @@
+<!-- /views/ventas.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ventas</title>
+    <link rel="stylesheet" href="../assets/css/ventas.css">
+</head>
+<body>
+    <header class="header">
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">
+            <img src="../assets/img/back-btn.png" alt="Volver" class="back-icon">
+        </button>
+        <h1 class="page-title">Ventas</h1>
+    </header>
+
+    <main class="main-container">
+        <div class="search-container">
+            <input type="text" id="sale-search-bar" placeholder="Buscar venta por ID o cliente">
+            <div class="sale-actions">
+                <button id="add-sale-btn" class="add-btn">Nueva Venta</button>
+                <button id="generate-invoice-btn" class="generate-invoice-btn">Generar Factura</button>
+            </div>
+        </div>
+
+        <table id="sale-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las ventas se renderizarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Modal para añadir/editar venta -->
+    <div id="sale-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-sale-modal" class="close-btn">&times;</button>
+            <h2 id="modal-title">Nueva Venta</h2>
+
+            <form id="saleForm">
+                <select id="client-select" required>
+                    <!-- Clientes se poblarán dinámicamente -->
+                </select>
+
+                <div>
+                    <div>
+                        <label>Productos/Servicios</label>
+                        <div class="item-list">
+                            <select id="product-select">
+                                <!-- Productos se poblarán dinámicamente -->
+                            </select>
+                            <select id="service-select">
+                                <!-- Servicios se poblarán dinámicamente -->
+                            </select>
+                            <input type="number" id="item-quantity" placeholder="Cantidad" min="1">
+                            <input type="number" id="item-price" placeholder="Precio Unitario" min="0" step="0.01">
+                            <input type="number" id="item-discount" placeholder="Descuento %" min="0" max="100">
+                            <button type="button" id="add-item-btn">Añadir Ítem</button>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto/Servicio</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Descuento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="item-list-body">
+                            <!-- Ítems de venta se añadirán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <input type="number" id="labor-cost" placeholder="Costo de Mano de Obra" min="0" step="0.01">
+                <input type="number" id="total-discount" placeholder="Descuento Total %" min="0" max="100">
+
+                <button type="submit" class="submit-btn">Guardar Venta</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/ventas.js"></script>
+</body>
+</html>

@@ -11,6 +11,23 @@ const productForm = document.getElementById('productForm');
 const productSearchBar = document.getElementById('product-search-bar');
 const modalTitle = document.getElementById('modal-title');
 
+// Función para mostrar el mensaje de error
+function showError(message) {
+    const errorToast = document.createElement('div');
+    errorToast.classList.add('error-toast');
+    errorToast.textContent = message;
+
+    document.body.appendChild(errorToast);
+
+    // Hacer que el mensaje se desvanezca después de unos segundos
+    setTimeout(() => {
+        errorToast.style.opacity = '0';
+        setTimeout(() => {
+            errorToast.remove();
+        }, 500); // Espera medio segundo para remover el mensaje después de desvanecerse
+    }, 3000); // El mensaje permanecerá visible por 3 segundos
+}
+
 // Modal de entrada de cantidad
 const increaseQuantityModal = document.getElementById('increase-quantity-modal');
 const quantityInput = document.getElementById('quantity-input');
@@ -114,7 +131,7 @@ async function fetchProducts() {
         renderProducts();
     } catch (error) {
         console.error('Error al obtener productos:', error);
-        alert('No se pudieron cargar los productos. Verifique la conexión.');
+        showError('No se pudieron cargar los productos. Verifique la conexión.');
     }
 }
 
@@ -167,10 +184,10 @@ async function increaseQuantity(index) {
 
         } catch (error) {
             console.error('Error al actualizar la cantidad:', error);
-            alert(`Hubo un problema al actualizar la cantidad del producto: ${error.message}`);
+            showError(`Hubo un problema al actualizar la cantidad del producto: ${error.message}`);
         }
     } else {
-        alert("Por favor, ingresa una cantidad válida mayor a 0.");
+        showError("Por favor, ingresa una cantidad válida mayor a 0.");
     }
 }
 
@@ -186,7 +203,7 @@ async function saveProduct(event) {
 
     const validation = validateProductForm();
     if (!validation.isValid) {
-        alert(validation.errorMessages.join('\n'));
+        showError(validation.errorMessages.join('\n'));
         return;
     }
 
@@ -218,7 +235,7 @@ async function saveProduct(event) {
         closeModalWindow();
     } catch (error) {
         console.error('Error al guardar producto:', error);
-        alert('No se pudo guardar el producto. Intente nuevamente.');
+        showError('No se pudo guardar el producto. Intente nuevamente.');
     }
 }
 
@@ -234,7 +251,7 @@ async function deleteProduct(index) {
             await fetchProducts();
         } catch (error) {
             console.error('Error al eliminar producto:', error);
-            alert('No se pudo eliminar el producto. Intente nuevamente.');
+            showError('No se pudo eliminar el producto. Intente nuevamente.');
         }
     }
 }

@@ -1,0 +1,66 @@
+datasource db {
+  provider = "sqlite" // O la base de datos que utilices (SQLite en este caso)
+  url      = env("DATABASE_URL") // Variable de entorno
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  direccion String?
+  telefono  String
+  email     String?
+  ventas    Venta[]
+}
+
+model Producto {
+  id         Int       @id @default(autoincrement())
+  nombre     String
+  precio     Float
+  cantidad   Int       @default(0)
+  ventaItems VentaItem[]
+}
+
+model Servicio {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  precio      Float
+  ventaItems  VentaItem[]
+}
+
+model Venta {
+  id        Int      @id @default(autoincrement())
+  fecha     DateTime @default(now())
+  total     Float
+  estado    String   // Estado de la venta, en lugar de usar enum
+  clienteId Int
+  cliente   Cliente  @relation(fields: [clienteId], references: [id])
+  ventaItems VentaItem[]
+}
+
+model VentaItem {
+  id               Int       @id @default(autoincrement())
+  ventaId          Int
+  productoId       Int?
+  servicioId       Int?
+  cantidad         Float
+  precioUnitario   Float
+  totalItem        Float
+  descuentoPorcentaje Float? @default(0)
+  descuentoMonto   Float? @default(0)
+  venta            Venta     @relation(fields: [ventaId], references: [id])
+  producto         Producto? @relation(fields: [productoId], references: [id])
+  servicio         Servicio? @relation(fields: [servicioId], references: [id])
+}
+
+model Gasto {
+  id        Int      @id @default(autoincrement())
+  concepto  String
+  monto     Float
+  categoria String
+  fecha     DateTime @default(now())
+}

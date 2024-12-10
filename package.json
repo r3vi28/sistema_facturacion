@@ -14,8 +14,10 @@
     "electron": "^33.2.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.0.1",
     "express": "^4.21.1",
     "pdf-lib": "^1.17.1",
+    "prisma": "^6.0.1",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7"
   }

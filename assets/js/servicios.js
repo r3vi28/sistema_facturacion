@@ -10,6 +10,23 @@ const serviceForm = document.getElementById('serviceForm');
 const serviceSearchBar = document.getElementById('service-search-bar');
 const modalTitle = document.getElementById('modal-title');
 
+// Función para mostrar el mensaje de error
+function showError(message) {
+    const errorToast = document.createElement('div');
+    errorToast.classList.add('error-toast');
+    errorToast.textContent = message;
+
+    document.body.appendChild(errorToast);
+
+    // Hacer que el mensaje se desvanezca después de unos segundos
+    setTimeout(() => {
+        errorToast.style.opacity = '0';
+        setTimeout(() => {
+            errorToast.remove();
+        }, 500); // Espera medio segundo para remover el mensaje después de desvanecerse
+    }, 3000); // El mensaje permanecerá visible por 3 segundos
+}
+
 // Validar producto
 function validateServiceForm() {
     const nombre = document.getElementById('name').value.trim();
@@ -99,7 +116,7 @@ async function fetchServices() {
         renderServices();
     } catch (error) {
         console.error('Error al obtener servicios:', error);
-        alert('No se pudieron cargar los servicios. Verifique la conexión.');
+        showError('No se pudieron cargar los servicios. Verifique la conexión.');
     }
 }
 
@@ -109,7 +126,7 @@ async function saveService(event) {
 
     const validation = validateServiceForm();
     if (!validation.isValid) {
-        alert(validation.errorMessages.join('\n'));
+        showError(validation.errorMessages.join('\n'));
         return;
     }
 
@@ -141,7 +158,7 @@ async function saveService(event) {
         closeModalWindow();
     } catch (error) {
         console.error('Error al guardar servicio:', error);
-        alert('No se pudo guardar el servicio. Intente nuevamente.');
+        showError('No se pudo guardar el servicio. Intente nuevamente.');
     }
 }
 
@@ -157,7 +174,7 @@ async function deleteService(index) {
             await fetchServices();
         } catch (error) {
             console.error('Error al eliminar servicio:', error);
-            alert('No se pudo eliminar el servicio. Intente nuevamente.');
+            showError('No se pudo eliminar el servicio. Intente nuevamente.');
         }
     }
 }

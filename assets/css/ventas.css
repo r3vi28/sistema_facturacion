@@ -1,9 +1,11 @@
+/* /assets/css/ventas.css */
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* #f4f4f4 */
+    background-color: #f4f4f4;
+    overflow-x: hidden; /* Evita el desbordamiento horizontal */
 }
 
 /* Header */
@@ -46,82 +48,62 @@ body {
     margin: 0 auto;
 }
 
-/* Botón agregar y barra de búsqueda */
+/* Barra de búsqueda y botones */
 .search-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin: 17px 0 15px;;
+    margin-bottom: 20px;
 }
 
-#spent-search-bar {
+#sale-search-bar {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 300px;
 }
 
-.add-btn {
+.sale-actions button {
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
-.add-btn:hover {
-    background-color: #218838;
+.sale-actions button:hover {
+    background-color: #0056b3;
 }
 
-/* Tabla */
-#spent-table {
+/* Tabla de ventas */
+#sale-table {
     width: 100%;
     border-collapse: collapse;
-    /* margin-top: 10px; */
-    margin: 20px 0;
+    margin-top: 20px;
     font-size: 1rem;
-    text-align: left;
     background-color: #f9f9f9;
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#spent-table thead {
+#sale-table thead {
     background-color: #333;
     color: white;
 }
 
-#spent-table th, #spent-table td {
-    /* text-align: left;
-    padding: 10px;
-    border: 1px solid #ddd; */
+#sale-table th, #sale-table td {
     padding: 12px 15px;
     border-bottom: 1px solid #ddd;
 }
 
-#spent-table tr:nth-child(even) {
+#sale-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-#spent-table tr:hover {
+#sale-table tr:hover {
     background-color: #e9ecef;
-}
-
-/* Responsividad en inputs del formulario */
-.modal-content input,
-.modal-content textarea,
-.modal-content select {
-    
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
 }
 
 /* Modal */
@@ -136,16 +118,23 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Espaciado interno del formulario */
+/* Modal content */
 .modal-content {
     background-color: white;
     margin: 10% auto;
     padding: 30px;
     width: 80%;
-    max-width: 500px;
+    max-width: 600px;
     border-radius: 10px;
     position: relative;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Permite el scroll solo dentro del modal */
+    max-height: 80vh; /* Limita la altura máxima del modal */
+    margin-top: 5%;
+}
+
+.modal-content::-webkit-scrollbar {
+    display: none;
 }
 
 .close-btn {
@@ -164,13 +153,14 @@ body {
     margin-bottom: 20px;
 }
 
-#spentForm label {
+#saleForm label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-#spentForm input {
+#saleForm input,
+#saleForm select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -178,11 +168,12 @@ body {
     border-radius: 5px;
 }
 
+/* Botón de Guardar Venta */
 .submit-btn {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
@@ -190,35 +181,31 @@ body {
 }
 
 .submit-btn:hover {
-    background-color: #0056b3;
+    background-color: #218838;
 }
 
-/* Botones de la tabla */
-#spent-table td button {
-    padding: 5px 10px;
+/* Estilo para la lista de productos y servicios */
+.item-list select,
+.item-list input {
+    width: 100%;
+    padding: 10px;
+    margin-right: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.item-list button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem;
-    color: white;
 }
 
-/* Botón Editar */
-#spent-table .edit-btn {
-    background-color: #007bff;
-}
-
-#spent-table .edit-btn:hover {
+.item-list button:hover {
     background-color: #0056b3;
-}
-
-/* Botón Eliminar */
-#spent-table .delete-btn {
-    background-color: #dc3545;
-}
-
-#spent-table .delete-btn:hover {
-    background-color: #c82333;
 }
 
 /* Responsividad */
@@ -229,30 +216,70 @@ body {
         gap: 15px;
     }
 
-    #spent-search-bar {
+    #sale-search-bar {
         width: 100%;
     }
 
-    .add-btn {
+    .sale-actions button {
         width: 100%;
     }
 
-    #spent-table {
+    #sale-table {
         font-size: 0.9rem;
     }
 
     .modal-content {
         width: 90%;
         padding: 20px;
+        margin-top: 10%;
     }
 
-    .modal-content input {
-        width: 100%; /* Evitar que se desborden */
-        padding: 12px;
+    #saleForm input,
+    #saleForm select {
+        width: 100%; 
+    }
+
+    .item-list select,
+    .item-list input {
+        width: 48%;
+        margin-right: 10px;
     }
 }
 
-/* Formato del error toast */
+/* Ajustes adicionales para pantallas más pequeñas */
+@media (max-width: 480px) {
+    .search-container {
+        flex-direction: column; /* Apilar elementos verticalmente */
+    }
+
+    #saleForm input,
+    #saleForm select {
+        font-size: 12px; /* Reducir tamaño de texto */
+        padding: 8px; /* Reducir padding de inputs */
+    }
+
+    .item-list select,
+    .item-list input {
+        width: 100%; /* Asegura que los campos ocupen el 100% del ancho disponible */
+        margin-right: 0;
+    }
+
+    .modal-content {
+        margin-top: 15%;
+        width: 95%; /* Ajusta el modal */
+        padding: 20px;
+    }
+
+    .sale-actions button {
+        font-size: 14px;
+    }
+
+    #sale-search-bar {
+        font-size: 14px;
+    }
+}
+
+/* Estilos de error */
 .error-toast {
     position: fixed;
     top: 20px;

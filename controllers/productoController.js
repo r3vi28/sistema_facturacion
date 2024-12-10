@@ -1,14 +1,13 @@
 // controllers/productoController.js
-const { Producto } = require('../models');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // Crear un nuevo producto
 exports.createProducto = async (req, res) => {
     try {
         const { nombre, precio, cantidad } = req.body;
-        const producto = await Producto.create({
-            nombre,
-            precio,
-            cantidad
+        const producto = await prisma.producto.create({
+            data: { nombre, precio, cantidad }
         });
         res.status(201).json(producto);
     } catch (error) {
@@ -20,7 +19,7 @@ exports.createProducto = async (req, res) => {
 // Obtener todos los productos
 exports.getProductos = async (req, res) => {
     try {
-        const productos = await Producto.findAll();
+        const productos = await prisma.producto.findMany();
         res.status(200).json(productos);
     } catch (error) {
         console.error('Error al obtener productos:', error);
@@ -32,7 +31,9 @@ exports.getProductos = async (req, res) => {
 exports.getProductoById = async (req, res) => {
     const { id } = req.params;
     try {
-        const producto = await Producto.findByPk(id);
+        const producto = await prisma.producto.findUnique({
+            where: { id: parseInt(id) }
+        });
         if (producto) {
             res.status(200).json(producto);
         } else {
@@ -49,16 +50,11 @@ exports.updateProducto = async (req, res) => {
     const { id } = req.params;
     const { nombre, precio, cantidad } = req.body;
     try {
-        const producto = await Producto.findByPk(id);
-        if (producto) {
-            producto.nombre = nombre;
-            producto.precio = precio;
-            producto.cantidad = cantidad;
-            await producto.save();
-            res.status(200).json(producto);
-        } else {
-            res.status(404).json({ message: 'Producto no encontrado' });
-        }
+        const producto = await prisma.producto.update({
+            where: { id: parseInt(id) },
+            data: { nombre, precio, cantidad }
+        });
+        res.status(200).json(producto);
     } catch (error) {
         console.error('Error al actualizar producto:', error);
         res.status(500).json({ message: 'Error al actualizar producto' });
@@ -69,9 +65,13 @@ exports.updateProducto = async (req, res) => {
 exports.deleteProducto = async (req, res) => {
     const { id } = req.params;
     try {
-        const producto = await Producto.findByPk(id);
+        const producto = await prisma.producto.findUnique({
+            where: { id: parseInt(id) }
+        });
         if (producto) {
-            await producto.destroy();
+            await prisma.producto.delete({
+                where: { id: parseInt(id) }
+            });
             res.status(204).send();
         } else {
             res.status(404).json({ message: 'Producto no encontrado' });
@@ -81,3 +81,4 @@ exports.deleteProducto = async (req, res) => {
         res.status(500).json({ message: 'Error al eliminar producto' });
     }
 };
+
