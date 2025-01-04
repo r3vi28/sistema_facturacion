@@ -159,13 +159,63 @@ body {
     font-weight: bold;
 }
 
-#saleForm input,
-#saleForm select {
+#saleForm input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+/* Estilo para campos de búsqueda */
+.input-search {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+/* Botón de búsqueda */
+.search-item-btn {
+    background: #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+}
+
+.search-item-btn:hover {
+    background: #0056b3;
+}
+
+#labelProductService {
+    margin-top: 5px;
+}
+
+/* Resultados de búsqueda */
+.search-results {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+.search-results div {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.search-results div:hover {
+    background: #f0f0f0;
 }
 
 /* Botón de Guardar Venta */
@@ -185,7 +235,6 @@ body {
 }
 
 /* Estilo para la lista de productos y servicios */
-.item-list select,
 .item-list input {
     width: 100%;
     padding: 10px;
@@ -234,12 +283,10 @@ body {
         margin-top: 10%;
     }
 
-    #saleForm input,
-    #saleForm select {
+    #saleForm input {
         width: 100%; 
     }
 
-    .item-list select,
     .item-list input {
         width: 48%;
         margin-right: 10px;
@@ -252,13 +299,11 @@ body {
         flex-direction: column; /* Apilar elementos verticalmente */
     }
 
-    #saleForm input,
-    #saleForm select {
+    #saleForm input {
         font-size: 12px; /* Reducir tamaño de texto */
         padding: 8px; /* Reducir padding de inputs */
     }
 
-    .item-list select,
     .item-list input {
         width: 100%; /* Asegura que los campos ocupen el 100% del ancho disponible */
         margin-right: 0;

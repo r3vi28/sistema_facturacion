@@ -47,25 +47,24 @@
             <h2 id="modal-title">Nueva Venta</h2>
 
             <form id="saleForm">
-                <select id="client-select" required>
-                    <!-- Clientes se poblarán dinámicamente -->
-                </select>
+                <!-- Input de búsqueda para el cliente -->
+                <label for="client-input">Cliente</label>
+                <input type="text" id="client-input" placeholder="Buscar o crear cliente" required>
+                <div id="client-results" class="search-results"></div>
 
                 <div>
-                    <div>
-                        <label>Productos/Servicios</label>
-                        <div class="item-list">
-                            <select id="product-select">
-                                <!-- Productos se poblarán dinámicamente -->
-                            </select>
-                            <select id="service-select">
-                                <!-- Servicios se poblarán dinámicamente -->
-                            </select>
-                            <input type="number" id="item-quantity" placeholder="Cantidad" min="1">
-                            <input type="number" id="item-price" placeholder="Precio Unitario" min="0" step="0.01">
-                            <input type="number" id="item-discount" placeholder="Descuento %" min="0" max="100">
-                            <button type="button" id="add-item-btn">Añadir Ítem</button>
-                        </div>
+                    <label id="labelProductService">Productos/Servicios</label>
+                    <div class="item-search">
+                        <input type="text" id="item-search-input" placeholder="Buscar producto o servicio">
+                        <button type="button" id="search-item-btn">Buscar</button>
+                    </div>
+                    <div id="item-results" class="search-results"></div>
+
+                    <div class="item-list">
+                        <input type="number" id="item-quantity" placeholder="Cantidad" min="1">
+                        <input type="number" id="item-price" placeholder="Precio Unitario" min="0" step="0.01">
+                        <input type="number" id="item-discount" placeholder="Descuento %" min="0" max="100">
+                        <button type="button" id="add-item-btn">Añadir Ítem</button>
                     </div>
 
                     <table>
